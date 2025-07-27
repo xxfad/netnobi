@@ -105,6 +105,4 @@ function NetNobi() {
 setTimeout( () => NetNobi(), 500);
 setTimeout( () => NetNobi(), 10000);
 
-})
-
 })();
