@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2507.3
+// @version      2507.5
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -19,7 +19,7 @@
 
     // Your code here...
     const GUARD_PREFIX = "NetNobi：";
-    const AGE_LEVEL = 8;
+    const AGE_LEVEL = 12;
 
     // 注册菜单命令，用于设置密钥
     GM_registerMenuCommand("设置 SiliconflowAI 密钥", () => {
@@ -64,7 +64,7 @@ function NetNobi() {
         "messages": [
             {
                 "role": "system",
-                "content": "你是专业的视频内容鉴别专家，专注守护儿童身心健康。允许:手工制作、生活赶海、动物狩猎、学习、益智、解谜、科学、童话故事等等。不允许:哈小浪、口水剧、玄幻、原创动画、穿越等等",
+                "content": "你是专业的视频内容鉴别专家，专注守护儿童身心健康。允许:手工制作、生活赶海、美食测评、生活旅游、生活捕猎、学习、益智、解谜、科学、童话故事等等。不允许:哈小浪、口水剧、奇幻、玄幻、原创动画、穿越等等",
             },
             {
                  "role": "user",
