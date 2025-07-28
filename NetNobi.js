@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2507.2
+// @version      2507.3
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -64,7 +64,7 @@ function NetNobi() {
         "messages": [
             {
                 "role": "system",
-                "content": "你是专业的视频内容鉴别专家，专注守护儿童身心健康。允许:手工制作、生活赶海、学习、益智、解谜、科学、童话故事等等。不允许:哈小浪、口水剧、玄幻、原创动画、穿越等等",
+                "content": "你是专业的视频内容鉴别专家，专注守护儿童身心健康。允许:手工制作、生活赶海、动物狩猎、学习、益智、解谜、科学、童话故事等等。不允许:哈小浪、口水剧、玄幻、原创动画、穿越等等",
             },
             {
                  "role": "user",
