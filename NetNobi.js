@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2507.5
+// @version      2507.6
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
 // @match        https://v.qq.com/x/page/*
+// @match        https://www.bilibili.com/video/*
 // @icon         https://v.qq.com/favicon.ico
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -30,17 +31,26 @@
     });
 
 
+function GetVideoInfo() {
+
+    if (location.hostname.includes("v.qq.com")) {
+        return (document.querySelector('[name=description]') || document.querySelector('[name=keywords]')).content;
+    } else if (location.hostname.includes("bilibili.com")) {
+        return document.querySelector('.video-info-title-inner').textContent + ' ' + document.querySelector('.video-tag-container').textContent
+    } else {
+        throw new Error("还未支持：" + location.hostname);
+    }
+}
 
 function NetNobi() {
 
     console.log(GUARD_PREFIX + "开始检测该视频是否适合小朋友观看");
 
     // 获取视频简介
-    //let dvinfo = (document.querySelector(".playlist-intro__right") || document.querySelector(".intro-wrapper")).textContent
-    let dvinfo = (document.querySelector('[name=description]') || document.querySelector('[name=keywords]')).content;
+    let videoInfo = GetVideoInfo();
 
     // 组装问答
-    let question = `《${dvinfo}》适合${AGE_LEVEL}岁小朋友看吗？简要回答`;
+    let question = `《${videoInfo}》适合${AGE_LEVEL}岁小朋友看吗？简要回答`;
 
     console.log(GUARD_PREFIX + question);
 
@@ -64,7 +74,7 @@ function NetNobi() {
         "messages": [
             {
                 "role": "system",
-                "content": "你是专业的视频内容鉴别专家，专注守护儿童身心健康。允许:手工制作、生活赶海、美食测评、生活旅游、生活捕猎、学习、益智、解谜、科学、童话故事等等。不允许:哈小浪、口水剧、奇幻、玄幻、原创动画、穿越等等",
+                "content": "你是专业的视频内容鉴别专家，专注守护儿童身心健康。允许:手工、生活赶海、美食测评、生活旅游、生活捕猎、学习、解谜、科学、科技、益智、童话故事等等。不允许:哈小浪、口水剧、奇幻、玄幻、原创动画、穿越等等",
             },
             {
                  "role": "user",
