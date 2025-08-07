@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2508.2
+// @version      2508.3
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -116,25 +116,22 @@ setTimeout( () => NetNobi(), 500);
 setTimeout( () => NetNobi(), 10000);
 
 function listenToUrlChanges(callback) {
-  // 监听 popstate（浏览器前进/后退）
-  window.addEventListener('popstate', callback);
+  window.addEventListener('popstate', () => callback('popstate'));
 
-  // 劫持 pushState 和 replaceState
   ['pushState', 'replaceState'].forEach(type => {
     const original = history[type];
     history[type] = function (...args) {
       const result = original.apply(this, args);
-      const event = new Event(type);
-      window.dispatchEvent(event);
+      callback(type);
       return result;
     };
-    window.addEventListener(type, callback);
   });
 }
 
+
 listenToUrlChanges(() => {
- setTimeout( () => NetNobi(), 500);
- setTimeout( () => NetNobi(), 10000);
+  setTimeout( () => NetNobi(), 500);
+  setTimeout( () => NetNobi(), 10000);
 });
 
 })();
