@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2508.4
+// @version      2508.3
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -131,6 +131,7 @@ function listenToUrlChanges(callback) {
 
 listenToUrlChanges(() => {
   setTimeout( () => NetNobi(), 500);
+  setTimeout( () => NetNobi(), 10000);
 });
 
 })();
