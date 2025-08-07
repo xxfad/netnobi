@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2508.1
+// @version      2508.2
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -74,7 +74,7 @@ function NetNobi() {
         "messages": [
             {
                 "role": "system",
-                "content": "你是专业的视频内容鉴别专家，专注守护儿童身心健康。允许:手工、生活赶海、美食测评、生活旅游、生活捕猎、学习、解谜、科学、科技、益智、童话故事、中国传统经典神话故事等等。不允许:哈小浪、口水剧、奇幻、玄幻、原创动画、穿越等等",
+                "content": "你是专业的视频内容鉴别专家，专注守护儿童身心健康。允许:积极向上、少儿动画、少儿节目、少儿电影、角色对抗、手工、生活赶海、美食测评、生活旅游、生活捕猎、学习、解谜、科学、科技、益智、童话故事等等。不允许:哈小浪、口水剧、非电视剧类的原创动画、穿越重生、成人等等",
             },
             {
                  "role": "user",
@@ -114,5 +114,27 @@ function NetNobi() {
 
 setTimeout( () => NetNobi(), 500);
 setTimeout( () => NetNobi(), 10000);
+
+function listenToUrlChanges(callback) {
+  // 监听 popstate（浏览器前进/后退）
+  window.addEventListener('popstate', callback);
+
+  // 劫持 pushState 和 replaceState
+  ['pushState', 'replaceState'].forEach(type => {
+    const original = history[type];
+    history[type] = function (...args) {
+      const result = original.apply(this, args);
+      const event = new Event(type);
+      window.dispatchEvent(event);
+      return result;
+    };
+    window.addEventListener(type, callback);
+  });
+}
+
+listenToUrlChanges(() => {
+ setTimeout( () => NetNobi(), 500);
+ setTimeout( () => NetNobi(), 10000);
+});
 
 })();
