@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2508.3
+// @version      2508.4
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -48,6 +48,16 @@ function NetNobi() {
 
     // 获取视频简介
     let videoInfo = GetVideoInfo();
+
+    if (videoInfo.length < 17) {
+        console.log(GUARD_PREFIX + `《${videoInfo}》信息太少，不足以判断，视为不适合`)
+        // 提示“不合适小朋友观看”
+        document.body.innerHTML = '<h1 style="font-size:3rem;">' + GUARD_PREFIX + '该视频不合适小朋友观看,3秒后关闭页面</h1>';
+        //进行3秒倒计时，然后关闭页面
+        setTimeout(() => { window.close() || window.history.back() }, 3000);
+
+        return;
+    }
 
     // 组装问答
     let question = `《${videoInfo}》适合${AGE_LEVEL}岁小朋友看吗？简要回答`;
@@ -130,8 +140,8 @@ function listenToUrlChanges(callback) {
 
 
 listenToUrlChanges(() => {
-  setTimeout( () => NetNobi(), 500);
-  setTimeout( () => NetNobi(), 10000);
+ setTimeout( () => NetNobi(), 500);
+ setTimeout( () => NetNobi(), 10000);
 });
 
 })();
