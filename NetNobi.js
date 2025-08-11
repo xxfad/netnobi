@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2508.4
+// @version      2508.5
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -49,7 +49,7 @@ function NetNobi() {
     // 获取视频简介
     let videoInfo = GetVideoInfo();
 
-    if (videoInfo.length < 17) {
+    if (videoInfo.length < 9) {
         console.log(GUARD_PREFIX + `《${videoInfo}》信息太少，不足以判断，视为不适合`)
         // 提示“不合适小朋友观看”
         document.body.innerHTML = '<h1 style="font-size:3rem;">' + GUARD_PREFIX + '该视频不合适小朋友观看,3秒后关闭页面</h1>';
