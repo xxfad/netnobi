@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2605.0
+// @version      2605.1
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
