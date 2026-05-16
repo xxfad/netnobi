@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2510.3
+// @version      2510.4
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -24,8 +24,8 @@
     const OPENAI_BASE_URL = "https://api.siliconflow.cn/v1";
 
     // 注册菜单命令，用于设置密钥
-    GM_registerMenuCommand("设置 SiliconflowAI 密钥", () => {
-        const key = prompt(GUARD_PREFIX + "请输入你的 SiliconflowAI 密钥：");
+    GM_registerMenuCommand("设置 OEPNAI_API_KEY", () => {
+        const key = prompt(GUARD_PREFIX + "请输入你的 OEPNAI_API_KEY：");
         if (key) {
             GM_setValue("sk", key);
         }
