@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2510.0
+// @version      2510.1
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -21,12 +21,21 @@
     // Your code here...
     const GUARD_PREFIX = "NetNobi：";
     const AGE_LEVEL = 12;
+    const DEFAULT_AI_API = "https://api.siliconflow.cn/v1/chat/completions";
 
     // 注册菜单命令，用于设置密钥
     GM_registerMenuCommand("设置 SiliconflowAI 密钥", () => {
         const key = prompt(GUARD_PREFIX + "请输入你的 SiliconflowAI 密钥：");
         if (key) {
             GM_setValue("sk", key);
+        }
+    });
+
+    GM_registerMenuCommand("设置 AI API 地址", () => {
+        const currentApi = GM_getValue("ai_api", DEFAULT_AI_API);
+        const aiApi = prompt(GUARD_PREFIX + "请输入 AI API 地址：", currentApi);
+        if (aiApi) {
+            GM_setValue("ai_api", aiApi);
         }
     });
 
@@ -106,7 +115,8 @@ function NetNobi() {
 
     //debugger
 
-    fetch('https://api.siliconflow.cn/v1/chat/completions', options)
+    const aiApi = GM_getValue("ai_api", DEFAULT_AI_API);
+    fetch(aiApi, options)
         .then(response => response.json())
         .then(data => {
             console.log(GUARD_PREFIX + data.choices[0].message.content)
