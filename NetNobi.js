@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2510.1
+// @version      2510.2
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -21,7 +21,7 @@
     // Your code here...
     const GUARD_PREFIX = "NetNobi：";
     const AGE_LEVEL = 12;
-    const DEFAULT_AI_API = "https://api.siliconflow.cn/v1/chat/completions";
+    const OPENAI_BASE_URL = "https://api.siliconflow.cn/v1/chat/completions";
 
     // 注册菜单命令，用于设置密钥
     GM_registerMenuCommand("设置 SiliconflowAI 密钥", () => {
@@ -31,11 +31,11 @@
         }
     });
 
-    GM_registerMenuCommand("设置 AI API 地址", () => {
-        const currentApi = GM_getValue("ai_api", DEFAULT_AI_API);
-        const aiApi = prompt(GUARD_PREFIX + "请输入 AI API 地址：", currentApi);
-        if (aiApi) {
-            GM_setValue("ai_api", aiApi);
+    GM_registerMenuCommand("设置 OPENAI_BASE_URL", () => {
+        const currentApi = GM_getValue("OPENAI_BASE_URL", GM_getValue("ai_api", OPENAI_BASE_URL));
+        const baseUrl = prompt(GUARD_PREFIX + "请输入 OPENAI_BASE_URL：", currentApi);
+        if (baseUrl) {
+            GM_setValue("OPENAI_BASE_URL", baseUrl);
         }
     });
 
@@ -115,8 +115,8 @@ function NetNobi() {
 
     //debugger
 
-    const aiApi = GM_getValue("ai_api", DEFAULT_AI_API);
-    fetch(aiApi, options)
+    const openaiBaseUrl = GM_getValue("OPENAI_BASE_URL", GM_getValue("ai_api", OPENAI_BASE_URL));
+    fetch(openaiBaseUrl, options)
         .then(response => response.json())
         .then(data => {
             console.log(GUARD_PREFIX + data.choices[0].message.content)
