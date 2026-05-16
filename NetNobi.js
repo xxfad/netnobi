@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2510.2
+// @version      2510.3
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -21,7 +21,7 @@
     // Your code here...
     const GUARD_PREFIX = "NetNobi：";
     const AGE_LEVEL = 12;
-    const OPENAI_BASE_URL = "https://api.siliconflow.cn/v1/chat/completions";
+    const OPENAI_BASE_URL = "https://api.siliconflow.cn/v1";
 
     // 注册菜单命令，用于设置密钥
     GM_registerMenuCommand("设置 SiliconflowAI 密钥", () => {
@@ -116,7 +116,11 @@ function NetNobi() {
     //debugger
 
     const openaiBaseUrl = GM_getValue("OPENAI_BASE_URL", GM_getValue("ai_api", OPENAI_BASE_URL));
-    fetch(openaiBaseUrl, options)
+    const normalizedBaseUrl = openaiBaseUrl.replace(/\/+$/, "");
+    const chatCompletionsUrl = normalizedBaseUrl.endsWith("/chat/completions")
+        ? normalizedBaseUrl
+        : `${normalizedBaseUrl}/chat/completions`;
+    fetch(chatCompletionsUrl, options)
         .then(response => response.json())
         .then(data => {
             console.log(GUARD_PREFIX + data.choices[0].message.content)
