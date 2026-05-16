@@ -22,7 +22,7 @@
     const GUARD_PREFIX = "NetNobi：";
     const AGE_LEVEL = 12;
     const OPENAI_BASE_URL = "https://api.siliconflow.cn/v1";
-    const OPENAI_MODEL = "Qwen/Qwen3-235B-A22B-Instruct-2507";
+    const OPENAI_MODEL = "deepseek-ai/DeepSeek-V4-Flash";
 
     // 注册菜单命令，用于设置密钥
     GM_registerMenuCommand("设置 OEPNAI_API_KEY", () => {
@@ -78,7 +78,7 @@ function NetNobi() {
     }
 
     // 组装问答
-    let question = `《${videoInfo}》适合${AGE_LEVEL}岁小朋友看吗？简要回答`;
+    let question = `《${videoInfo}》适合${AGE_LEVEL}岁小朋友看吗？回答适合或者不适合`;
 
     console.log(GUARD_PREFIX + question);
 
