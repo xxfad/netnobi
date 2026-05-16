@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         小网神NetNobi
 // @namespace    http://tampermonkey.net/
-// @version      2510.0
+// @version      2510.5
 // @description
 // @author       xxfad
 // @match        https://v.qq.com/x/cover/*
@@ -21,12 +21,30 @@
     // Your code here...
     const GUARD_PREFIX = "NetNobi：";
     const AGE_LEVEL = 12;
+    const OPENAI_BASE_URL = "https://api.siliconflow.cn/v1";
+    const OPENAI_MODEL = "Qwen/Qwen3-235B-A22B-Instruct-2507";
 
     // 注册菜单命令，用于设置密钥
-    GM_registerMenuCommand("设置 SiliconflowAI 密钥", () => {
-        const key = prompt(GUARD_PREFIX + "请输入你的 SiliconflowAI 密钥：");
+    GM_registerMenuCommand("设置 OEPNAI_API_KEY", () => {
+        const key = prompt(GUARD_PREFIX + "请输入你的 OEPNAI_API_KEY：");
         if (key) {
             GM_setValue("sk", key);
+        }
+    });
+
+    GM_registerMenuCommand("设置 OPENAI_BASE_URL", () => {
+        const currentApi = GM_getValue("OPENAI_BASE_URL", GM_getValue("ai_api", OPENAI_BASE_URL));
+        const baseUrl = prompt(GUARD_PREFIX + "请输入 OPENAI_BASE_URL：", currentApi);
+        if (baseUrl) {
+            GM_setValue("OPENAI_BASE_URL", baseUrl);
+        }
+    });
+
+    GM_registerMenuCommand("设置 OPENAI_MODEL", () => {
+        const currentModel = GM_getValue("OPENAI_MODEL", OPENAI_MODEL);
+        const model = prompt(GUARD_PREFIX + "请输入 OPENAI_MODEL：", currentModel);
+        if (model) {
+            GM_setValue("OPENAI_MODEL", model);
         }
     });
 
@@ -71,8 +89,9 @@ function NetNobi() {
         //window.close() || window.history.back() ;
     }
 
+    const openaiModel = GM_getValue("OPENAI_MODEL", OPENAI_MODEL);
     const agentOptions = {
-        "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "model": openaiModel,
         "max_tokens": 64,
         "min_p": 0.05,
         "temperature": 0.7,
@@ -106,7 +125,12 @@ function NetNobi() {
 
     //debugger
 
-    fetch('https://api.siliconflow.cn/v1/chat/completions', options)
+    const openaiBaseUrl = GM_getValue("OPENAI_BASE_URL", GM_getValue("ai_api", OPENAI_BASE_URL));
+    const normalizedBaseUrl = openaiBaseUrl.replace(/\/+$/, "");
+    const chatCompletionsUrl = normalizedBaseUrl.endsWith("/chat/completions")
+        ? normalizedBaseUrl
+        : `${normalizedBaseUrl}/chat/completions`;
+    fetch(chatCompletionsUrl, options)
         .then(response => response.json())
         .then(data => {
             console.log(GUARD_PREFIX + data.choices[0].message.content)
